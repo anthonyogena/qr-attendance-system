@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>QR Code Attendance System</title>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+    <script src="https://unpkg.com/html5-qrcode@2.3.8/html5-qrcode.min.js"></script>
+
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <!-- LOGIN -->
+
+    <div id="loginScreen" class="login-screen">
+
+        <div class="login-card">
+
+            <h1>Teacher Login</h1>
+
+            <p>
+                Login using your teacher account.
+            </p>
+
+            <input type="text" id="teacherUsername" placeholder="Username">
+
+            <input type="password" id="teacherPassword" placeholder="Password">
+
+            <button class="primary-btn" onclick="teacherLogin()">
+                Login
+            </button>
+
+            <p id="loginError" class="login-error"></p>
+
+            <button class="signup-btn" onclick="showSignup()">
+                Create Teacher Account
+            </button>
+
+            <br>
+
+            <button class="student-mode-btn" onclick="continueAsStudent()">
+                Continue as Student
+            </button>
+
+        </div>
+
+    </div>
+
+
+    <!-- SIGN UP -->
+
+    <div id="signupScreen" class="login-screen hidden">
+
+        <div class="login-card">
+
+            <h1>Teacher Sign Up</h1>
+
+            <p>
+                Create your own teacher account.
+            </p>
+
+            <input type="text" id="signupName" placeholder="Full Name">
+
+            <input type="text" id="signupUsername" placeholder="Create Username">
+
+            <input type="password" id="signupPassword" placeholder="Create Password">
+
+            <input type="password" id="signupConfirmPassword" placeholder="Confirm Password">
+
+            <button class="primary-btn" onclick="teacherSignup()">
+                Create Account
+            </button>
+
+            <p id="signupMessage" class="login-error"></p>
+
+            <button class="close-btn" onclick="showLogin()">
+                Back to Login
+            </button>
+
+        </div>
+
+    </div>
+
+
+    <!-- STUDENT PAGE -->
+
+    <div id="studentPage" class="page hidden">
+
+        <h1>QR Code Attendance System</h1>
+
+        <div class="card">
+
+            <h2>Student QR Registration</h2>
+
+            <p class="info-text">
+                Enter your information and generate your QR code.
+                Show the QR code to your teacher for attendance.
+            </p>
+
+            <input type="text" id="studentName" placeholder="Enter Full Name">
+
+            <input type="text" id="schoolId" placeholder="Enter School ID">
+
+            <input type="text" id="course" placeholder="Enter Course">
+
+            <button class="primary-btn" onclick="generateQR()">
+                Generate QR Code
+            </button>
+
+            <div id="qrcode"></div>
+
+            <button id="closeQrBtn" class="close-btn" onclick="closeQR()" style="display:none;">
+                Close QR Code
+            </button>
+
+        </div>
+
+        <div class="card security-card">
+
+            <h2>Teacher Access</h2>
+
+            <p class="info-text">
+                Only registered teachers can access
+                the attendance scanner and attendance records.
+            </p>
+
+            <button class="teacher-login-btn" onclick="showLogin()">
+                Teacher Login
+            </button>
+
+        </div>
+
+    </div>
+
+
+    <!-- TEACHER PAGE -->
+
+    <div id="teacherPage" class="page hidden">
+
+        <h1>Teacher Attendance Dashboard</h1>
+
+        <div class="teacher-bar">
+
+            <span>
+                ? Teacher Mode |
+                <span id="loggedTeacherName">
+                    Teacher
+                </span>
+            </span>
+
+            <button class="logout-btn" onclick="teacherLogout()">
+                Logout
+            </button>
+
+        </div>
+
+
+        <!-- SCANNER -->
+
+        <div class="card">
+
+            <h2>1. Mark Attendance</h2>
+
+            <p class="info-text">
+                Only the logged-in teacher can operate
+                the attendance scanner.
+            </p>
+
+            <button id="startScanBtn" class="primary-btn" onclick="startCamera()">
+                Start Camera & Scan
+            </button>
+
+            <button id="stopScanBtn" class="stop-btn" onclick="stopCamera()" style="display:none;">
+                Stop Camera
+            </button>
+
+            <div id="reader">
+                Click "Start Camera" and allow permission
+            </div>
+
+        </div>
+
+
+        <!-- ATTENDANCE LOG -->
+
+        <div class="card">
+
+            <h2>2. Monthly Attendance Log</h2>
+
+            <div class="account-info">
+                Attendance records for:
+                <strong id="recordTeacherName"></strong>
+            </div>
+
+            <div class="filter-container">
+
+                <label for="monthFilter">
+                    Select Month:
+                </label>
+
+                <select id="monthFilter" onchange="updateTable()">
+
+                    <option value="0">January</option>
+                    <option value="1">February</option>
+                    <option value="2">March</option>
+                    <option value="3">April</option>
+                    <option value="4">May</option>
+                    <option value="5">June</option>
+                    <option value="6">July</option>
+                    <option value="7">August</option>
+                    <option value="8">September</option>
+                    <option value="9">October</option>
+                    <option value="10">November</option>
+                    <option value="11">December</option>
+
+                </select>
+
+            </div>
+
+            <div class="table-responsive">
+
+                <table>
+
+                    <thead>
+
+                        <tr>
+                            <th>School ID</th>
+                            <th>Name</th>
+                            <th>Course</th>
+                            <th>Status</th>
+                            <th>Date & Time</th>
+                        </tr>
+
+                    </thead>
+
+                    <tbody id="attendanceTable"></tbody>
+
+                </table>
+
+            </div>
+
+            <button class="export-btn" onclick="exportMonthlyCSV()">
+                Export Month to CSV
+            </button>
+
+            <button class="clear-btn" onclick="clearAllData()">
+                Clear My Attendance Logs
+            </button>
+
+            <button class="delete-account-btn" onclick="deleteAccountWithPassword()">
+                Delete My Teacher Account
+            </button>
+
+        </div>
+
+    </div>
+
+
+    <script src="script.js"></script>
+
+</body>
+
+</html>
