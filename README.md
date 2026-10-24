@@ -20,7 +20,7 @@ Built with **Spring Boot**, **SQLite**, and **Vanilla JavaScript**.
 ## 🛠️ Tech Stack
 
 **Backend:**
-- **Java 17** & **Spring Boot 3**
+- **Java 17** & **Spring Boot 4.1.1**
 - **Spring Data JPA** & Hibernate
 - **SQLite** (Local, file-based database)
 - **Spring Security** (BCrypt password encoding)
