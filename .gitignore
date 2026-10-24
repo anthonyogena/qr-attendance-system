@@ -1,0 +1,30 @@
+# IntelliJ IDEA
+.idea/
+*.iws
+*.iml
+*.ipr
+
+# VS Code
+.vscode/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# --- BACKEND (SPRING BOOT) ---
+# Target build folders
+backend/target/
+**/target/
+
+# Maven Wrapper
+backend/.mvn/
+!backend/.mvn/wrapper/maven-wrapper.jar
+
+# Database Files (CRITICAL - DO NOT PUSH THESE)
+backend/data/
+*.db
+*.sqlite
+*.sqlite3
+
+# Spring Boot Misc
+backend/HELP.md
