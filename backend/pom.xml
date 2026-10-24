@@ -49,6 +49,13 @@
             <version>3.45.1.0</version>
         </dependency>
 
+        <dependency>
+            <groupId>org.postgresql</groupId>
+            <artifactId>postgresql</artifactId>
+            <version>42.7.14</version>
+            <scope>runtime</scope>
+        </dependency>
+
         <!-- Hibernate Community Dialects (Required for SQLite) -->
         <dependency>
             <groupId>org.hibernate.orm</groupId>
