@@ -1,6 +1,5 @@
 // js/api.js
-const API_BASE_URL = "http://localhost:8080/api/v1";
-
+const API_BASE_URL = "https://qr-attendance-system-y57a.onrender.com/api/v1";
 // 1. Login Request
 async function apiLogin(username, password) {
     const response = await fetch(`${API_BASE_URL}/auth/login`, {
